@@ -1,5 +1,11 @@
 import json
 
+# Import Japanese tokenizer Sudachi
+from sudachipy import tokenizer
+from sudachipy import dictionary
+
+tokenizer_obj = dictionary.Dictionary().create()
+
 # Open book txt file
 book = open("encodedJp.txt","r")
 
@@ -21,12 +27,16 @@ for paragraph in bookContents:
     # Finds line starting new chapter
     if "中見出し" in paragraph:
         chapter = 'chapter' + str(counter)
-        print(chapter)
         counter += 1
         newChapter = []
         newParagraph = []
     # If not a new chapter, add it to the paragraph array
     else:
+
+        mode = tokenizer.Tokenizer.SplitMode.B
+        print([m.surface() for m in tokenizer_obj.tokenize(paragraph, mode)])
+
+
         words = paragraph.split(" ")
         # Ignores empty lines
         if words[0].isspace() == False:
