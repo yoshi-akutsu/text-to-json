@@ -1,7 +1,7 @@
 import json
 
 # Open book txt file
-book = open("trimmedEng.txt","r")
+book = open("encodedJp.txt","r")
 
 bookContents = book.readlines()
 
@@ -17,26 +17,27 @@ class BookObj():
 myBook = BookObj()
 
 # Iterates each line in book
-for line in bookContents:
+for paragraph in bookContents:
     # Finds line starting new chapter
-    if "CHAPTER" in line:
+    if "中見出し" in paragraph:
         chapter = 'chapter' + str(counter)
+        print(chapter)
         counter += 1
         newChapter = []
         newParagraph = []
     # If not a new chapter, add it to the paragraph array
     else:
-        words = line.split(" ")
+        words = paragraph.split(" ")
         # Ignores empty lines
         if words[0].isspace() == False:
             newParagraph.append(words)
         else:
             newChapter.append(newParagraph)
             newParagraph = []
-    if 'END' in line:
+    if 'END' in paragraph:
         setattr(myBook, chapter, newChapter)
         
-with open('book.json', "w") as file_write:
+with open('bookJp.json', "w") as file_write:
     json.dump(myBook.__dict__, file_write)
 
 book.close()
