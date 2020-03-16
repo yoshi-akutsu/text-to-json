@@ -9,7 +9,7 @@ bookContents = book.readlines()
 newChapter = []
 newParagraph = []
 chapter = ''
-counter = 0
+counter = 1
 
 # Create class and instantiate BookObj object
 class BookObj():
@@ -20,7 +20,8 @@ myBook = BookObj()
 for line in bookContents:
     # Finds line starting new chapter
     if "CHAPTER" in line:
-        chapter = line.strip()
+        chapter = 'chapter' + str(counter)
+        counter += 1
         newChapter = []
         newParagraph = []
     # If not a new chapter, add it to the paragraph array
@@ -35,7 +36,7 @@ for line in bookContents:
     if 'END' in line:
         setattr(myBook, chapter, newChapter)
 
-with open('out.txt', 'w') as f:
-    print(myBook.__dict__, file=f)
+with open('book.json', "w") as file_write:
+    json.dump(myBook.__dict__, file_write)
 
 book.close()
